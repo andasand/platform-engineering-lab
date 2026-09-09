@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventflow
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: eventflow
+  template:
+    metadata:
+      labels:
+        app: eventflow
+    spec:
+      containers:
+      - name: eventflow
+        image: eventflow:0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
