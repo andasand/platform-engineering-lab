@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: eventflow
-        image: eventflow:0.1
+        image: eventflow:0.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000

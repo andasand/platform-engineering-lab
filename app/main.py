@@ -1,3 +1,5 @@
+import socket
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -15,8 +17,9 @@ class Event(BaseModel):
 @app.get("/health")
 def health_check():
     return {
-        "status": "healthy", 
-        "message": "EventFlow is running."
+        "status": "healthy",
+        "message": "EventFlow is running.",
+        "hostname": socket.gethostname()
     }
 
 
