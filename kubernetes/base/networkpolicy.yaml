@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: eventflow-default-deny
+spec:
+  podSelector:
+    matchLabels:
+      app: eventflow
+  policyTypes:
+    - Ingress

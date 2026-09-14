@@ -29,3 +29,45 @@ Application Workloads
    |
    v
 Users
+
+## Control Plane and Local kind Architecture
+
+This lab uses **kind (Kubernetes IN Docker)** to provide a local Kubernetes
+environment. kind runs Kubernetes nodes as Docker containers. In this lab,
+the cluster is named `platform-lab`, and its control-plane node runs as the
+Docker container:
+
+`platform-lab-control-plane`
+
+### Architecture
+
+```text
+Developer / kubectl
+        |
+        | Kubernetes API
+        v
++----------------------------------+
+| Docker                           |
+|                                  |
+| platform-lab-control-plane       |
+|                                  |
+|  +----------------------------+  |
+|  | Kubernetes Control Plane   |  |
+|  |                            |  |
+|  | API Server                 |  |
+|  | etcd                       |  |
+|  | Scheduler                  |  |
+|  | Controller Manager         |  |
+|  +----------------------------+  |
+|               |                  |
++---------------|------------------+
+                |
+                v
+        Kubernetes Workloads
+                |
+                v
+        EventFlow Deployment
+          desired replicas: 3
+                |
+                v
+          EventFlow Pods
