@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+.aws
+**/*.pem
+**/*.key
+.venv
+**/__pycache__
+**/*.pyc
+infra/
+backups/

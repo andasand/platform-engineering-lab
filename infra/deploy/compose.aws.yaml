@@ -1,0 +1,48 @@
+# Merge AFTER the root compose.yaml. For the dedicated AWS host only.
+services:
+  postgres:
+    image: postgres:16.15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-data_engineering}
+      POSTGRES_USER: ${POSTGRES_USER:-pipeline_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      database:
+        aliases:
+          - data-engineering-postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  db-init:
+    image: postgres:16.15
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  eventflow:
+    restart: unless-stopped
+  log-ingestor:
+    restart: unless-stopped
+  prometheus:
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+      - --storage.tsdb.retention.size=2GB
+  grafana:
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  database:
+    external: false
+    name: ${POSTGRES_NETWORK:-platform-engineering-lab_database}

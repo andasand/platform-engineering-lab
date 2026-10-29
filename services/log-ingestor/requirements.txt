@@ -1,0 +1,6 @@
+fastapi==0.141.1
+uvicorn==0.52.4
+psycopg[binary]==3.2.10
+pydantic==2.13.5
+prometheus-fastapi-instrumentator==8.1.0
+prometheus_client==0.26.0
