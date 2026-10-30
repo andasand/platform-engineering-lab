@@ -26,4 +26,4 @@ test_address="$(docker port "$test_container" 5432/tcp)"
 [[ "$test_address" == 127.0.0.1:* ]] || exit 1
 export PHASE3_TEST_DSN="host=127.0.0.1 port=${test_address##*:} dbname=phase3_synthetic_test user=postgres"
 "$test_python" -m unittest collectors.windows_security.test_collector -v
-"$test_python" -m unittest discover -s tests -p test_ingestor_idempotency.py -v
+"$test_python" -m unittest discover -s tests -p 'test_*.py' -v

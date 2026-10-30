@@ -1,9 +1,13 @@
 # Phase 3 idempotency — proposed deployment review
 
-Local implementation and synthetic validation only. No AWS connection, deployment,
-push, Terraform change, or real Windows collection was performed for this work.
-The approval candidate now has an [exact rollout and rollback runbook](PHASE3_ROLLOUT_PLAN.md),
-including the locally reverified encrypted recovery point. Its commands remain unexecuted.
+The first approved deployment published `60ba7141b1294679c1b0ee2eecb08558d2a1ee3f`
+and applied migration 002. Verification then failed on Python 3.9 timestamp parsing;
+the prior API image was restored. The recorded database now has four records,
+including both synthetic acceptance rows. The migration/compatibility design below
+remains applicable; first-deployment instructions are historical. Use the corrected
+[retry and rollback runbook](PHASE3_ROLLOUT_PLAN.md): validate the existing migration,
+capture the four-row baseline, and do not execute the migration again for this retry.
+No retry, push, or AWS access was performed during the local correction task.
 
 ## Proposed database migration
 

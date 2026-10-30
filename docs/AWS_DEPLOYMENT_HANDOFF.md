@@ -3,8 +3,10 @@
 Historical record: the predeployment status below describes 2026-10-29 and has
 since been superseded by successful application deployment and dashboard updates.
 For the pending Phase 3 release, use the [rollout approval plan](PHASE3_ROLLOUT_PLAN.md),
-which distinguishes recorded remote evidence from local preparation. Phase 3
-idempotency has not been deployed.
+which distinguishes recorded remote evidence from local preparation. The first
+Phase 3 attempt applied migration 002 but rolled the API back after a Python 3.9
+verification error. The database retains four records and the unique constraint;
+the corrected retry has not been deployed.
 
 Phase 2 preparation is recorded in [the approval review](AWS_PHASE2_REVIEW.md),
 including a fresh SSM capacity check and deployment/rollback runbooks. This

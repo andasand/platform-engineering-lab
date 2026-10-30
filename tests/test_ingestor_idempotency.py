@@ -23,6 +23,10 @@ from psycopg.conninfo import conninfo_to_dict
 from fastapi.testclient import TestClient
 import uvicorn
 
+verification_spec = importlib.util.spec_from_file_location('phase3_verification', Path(__file__).resolve().parents[1] / 'scripts/verify_phase3.py')
+verification = importlib.util.module_from_spec(verification_spec)
+verification_spec.loader.exec_module(verification)
+
 from collectors.windows_security.collector import Outbox, normalize
 from collectors.windows_security.local_transport import LocalHttpSender
 
@@ -210,6 +214,42 @@ class IngestorIntegrationTests(unittest.TestCase):
             server.should_exit = True
             thread.join(5)
             sock.close()
+
+    def test_retry_baseline_with_preapplied_migration_and_four_records(self):
+        # This connection targets only the guarded disposable test database.
+        # The transaction restores its prior rows/sequence on exit; no application
+        # or AWS database is used by the local test runner.
+        with psycopg.connect(DSN) as conn:
+            try:
+                conn.execute('TRUNCATE public.security_events RESTART IDENTITY')
+                conn.execute("SET TIME ZONE 'UTC'")
+                for _ in range(2):
+                    conn.execute("INSERT INTO security_events(event_time,service,event_type,severity,message,raw_event) VALUES (now(),'synthetic-original','test','INFO','synthetic','{}')")
+                class BorrowedConnection:
+                    def __enter__(self): return conn
+                    def __exit__(self, *args): pass
+                with patch.object(self.module, 'get_connection', BorrowedConnection):
+                    def send(path, payload=None, expected=200):
+                        response = self.client.get(path) if payload is None else self.client.post(path, json=payload)
+                        self.assertEqual(response.status_code, expected)
+                        return response.json()
+                    event = verification.existing_event()
+                    self.assertEqual(send('/events', event)['event_id'], 3)
+                    self.assertEqual(send('/events', event)['event_id'], 3)
+                    send('/events', dict(event, message='Synthetic conflicting content'), 409)
+                    legacy = dict(event)
+                    legacy.pop('source_event_id')
+                    send('/events', legacy)
+                    baseline = conn.execute(verification.SNAPSHOT_SQL).fetchone()[0]
+                    verification.validate_baseline(baseline)
+                    self.assertEqual([row['id'] for row in baseline['records']], [1, 2, 3, 6])
+                    self.assertEqual(verification.acceptance(send)['event_id'], 3)
+                    after = conn.execute(verification.SNAPSHOT_SQL).fetchone()[0]
+                    verification.compare_baseline(baseline, after)
+                    self.assertEqual(after['rows'], 4)
+                    self.assertGreater(after['sequence'], baseline['sequence'])
+            finally:
+                conn.rollback()
 
 
 if __name__ == '__main__':

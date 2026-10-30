@@ -2,10 +2,12 @@
 
 Status: local, synthetic-only implementation with idempotent ingestion. An additive
 migration and ingestor update are prepared and tested against disposable local
-PostgreSQL, including loopback HTTP timeout/restart tests. Existing lab data and
-the AWS stack are unchanged. No real Windows logs, AWS transmission, deployment,
-or publication. See [migration and compatibility review](PHASE3_IDEMPOTENCY_REVIEW.md)
-before any deployment. Windows acquisition remains design work.
+PostgreSQL, including loopback HTTP timeout/restart tests. The first approved AWS
+rollout applied migration 002 and then restored the prior API after a verification
+error. Its four-record database and schema are retained. No real Windows logs or
+ongoing collector delivery have been enabled. See the corrected
+[retry plan](PHASE3_ROLLOUT_PLAN.md) before redeployment. Windows acquisition remains
+design work; the current corrections are local only.
 
 ## API review completed before implementation
 

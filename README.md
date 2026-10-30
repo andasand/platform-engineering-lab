@@ -4,7 +4,8 @@ Phase 3's synthetic-only Windows security collector prototype and proposed priva
 SSM transport are documented in [the collector design](docs/PHASE3_WINDOWS_COLLECTOR.md).
 The proposed additive ingestion migration and rollout compatibility are in
 [the idempotency review](docs/PHASE3_IDEMPOTENCY_REVIEW.md).
-Exact proposed rollout/rollback commands are in the
+The first rollout retained migration 002 and four database records but restored
+the previous API after a Python 3.9 verification error. Corrected retry/rollback commands are in the
 [Phase 3 approval plan](docs/PHASE3_ROLLOUT_PLAN.md).
 
 A progressive hands-on lab for building, securing, automating, observing, and troubleshooting a production-style Kubernetes platform.
