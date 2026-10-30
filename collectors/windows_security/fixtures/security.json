@@ -1,0 +1,64 @@
+[
+  {
+    "synthetic": true,
+    "host_alias": "lab-workstation-a",
+    "generation": "synthetic-generation-1",
+    "channel": "Security",
+    "provider": "Microsoft-Windows-Security-Auditing",
+    "record_id": 101,
+    "event_id": 4624,
+    "timestamp": "2026-10-30T13:00:00Z",
+    "logon_type": 2,
+    "username": "SYNTHETIC\\alice",
+    "source_ip": "192.0.2.10",
+    "message": "Synthetic secret=DO-NOT-PERSIST; C:\\Users\\alice\\private.txt"
+  },
+  {
+    "synthetic": true,
+    "host_alias": "lab-workstation-a",
+    "generation": "synthetic-generation-1",
+    "channel": "Security",
+    "provider": "Microsoft-Windows-Security-Auditing",
+    "record_id": 102,
+    "event_id": 4624,
+    "timestamp": "2026-10-30T13:00:01Z",
+    "logon_type": 3,
+    "message": "Synthetic network logon: filtered by policy"
+  },
+  {
+    "synthetic": true,
+    "host_alias": "lab-workstation-a",
+    "generation": "synthetic-generation-1",
+    "channel": "Security",
+    "provider": "Microsoft-Windows-Security-Auditing",
+    "record_id": 103,
+    "event_id": 4625,
+    "timestamp": "2026-10-30T13:00:02Z",
+    "logon_type": 10,
+    "username": "SYNTHETIC\\bob",
+    "source_ip": "2001:db8::10",
+    "EventData": {"Password": "DO-NOT-PERSIST", "TargetUserSid": "SYNTHETIC-SID"}
+  },
+  {
+    "synthetic": true,
+    "host_alias": "lab-workstation-a",
+    "generation": "synthetic-generation-1",
+    "channel": "Security",
+    "provider": "Microsoft-Windows-Security-Auditing",
+    "record_id": 104,
+    "event_id": 4688,
+    "timestamp": "2026-10-30T13:00:03Z",
+    "message": "Synthetic process creation: outside the initial allowlist"
+  },
+  {
+    "synthetic": true,
+    "host_alias": "lab-workstation-a",
+    "generation": "synthetic-generation-1",
+    "channel": "Security",
+    "provider": "Microsoft-Windows-Eventlog",
+    "record_id": 105,
+    "event_id": 1102,
+    "timestamp": "2026-10-30T13:00:04Z",
+    "message": "Synthetic audit clear notification"
+  }
+]

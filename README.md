@@ -1,5 +1,12 @@
 # Platform Engineering Lab
 
+Phase 3's synthetic-only Windows security collector prototype and proposed private
+SSM transport are documented in [the collector design](docs/PHASE3_WINDOWS_COLLECTOR.md).
+The proposed additive ingestion migration and rollout compatibility are in
+[the idempotency review](docs/PHASE3_IDEMPOTENCY_REVIEW.md).
+Exact proposed rollout/rollback commands are in the
+[Phase 3 approval plan](docs/PHASE3_ROLLOUT_PLAN.md).
+
 A progressive hands-on lab for building, securing, automating, observing, and troubleshooting a production-style Kubernetes platform.
 
 The project is designed around a simple learning cycle:
@@ -144,7 +151,7 @@ Python 3.12 slim and starts Uvicorn on container port 8000.
 | --- | --- |
 | `GET /health` | Application liveness; does not require PostgreSQL |
 | `GET /ready` | Checks database connectivity and required table/column access; 503 on failure |
-| `POST /events` | Validates a security event and commits it to PostgreSQL; 200 with the inserted ID |
+| `POST /events` | Validates/commits an event; optional `source_event_id` deduplicates retries and returns the original ID; conflicting content returns 409 |
 | `GET /metrics` | Prometheus process and HTTP metrics |
 
 Severity values are normalized to uppercase and restricted to DEBUG, INFO,
@@ -188,6 +195,9 @@ Both applications expose interactive API documentation at `/docs`.
 The one-shot `db-init` service runs
 `database/init/001_security_events.sql` with `ON_ERROR_STOP=1`; the ingestor
 starts only after it succeeds. `db-init` exiting with code 0 is expected.
+The initializer then applies the additive `database/migrations/002_source_event_id.sql`
+before the updated ingestor starts. Existing rows retain null source identifiers;
+producers that omit the identifier retain insert-per-request behavior.
 The initializer creates `public.security_events` in the configured database
 with an identity primary key, event timestamp, service/type/severity, optional
 IP and username, message, raw JSONB, and insertion timestamp. It uses a

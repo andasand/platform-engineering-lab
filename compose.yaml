@@ -23,7 +23,8 @@ services:
       PGCONNECT_TIMEOUT: "5"
     volumes:
       - ./database/init/001_security_events.sql:/init/001_security_events.sql:ro
-    command: ["psql", "-X", "-v", "ON_ERROR_STOP=1", "-f", "/init/001_security_events.sql"]
+      - ./database/migrations/002_source_event_id.sql:/init/002_source_event_id.sql:ro
+    command: ["psql", "-X", "-v", "ON_ERROR_STOP=1", "-f", "/init/001_security_events.sql", "-f", "/init/002_source_event_id.sql"]
     networks:
       - database
     restart: "no"

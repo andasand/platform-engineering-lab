@@ -16,3 +16,4 @@ __pycache__/
 *.tfvars.json
 crash.log
 backups/
+.collector-state/

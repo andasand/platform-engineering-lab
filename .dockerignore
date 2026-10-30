@@ -9,3 +9,4 @@
 **/*.pyc
 infra/
 backups/
+.collector-state/
