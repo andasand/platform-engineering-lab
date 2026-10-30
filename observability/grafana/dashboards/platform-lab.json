@@ -7,7 +7,7 @@
   ],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "editable": false,
   "refresh": "15s",
   "time": {
@@ -29,7 +29,7 @@
         "x": 0,
         "y": 0
       },
-      "description": "Requests/second over 5 minutes. Excludes /metrics, /health, and /ready.",
+      "description": "Requests/second over 5 minutes. Excludes /metrics, /health, and /ready. Y-axis starts at zero with a soft maximum of 1 request/second; expands automatically for higher traffic.",
       "targets": [
         {
           "refId": "A",
@@ -54,7 +54,11 @@
             "drawStyle": "line",
             "lineWidth": 2,
             "fillOpacity": 12,
-            "showPoints": "never"
+            "showPoints": "never",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "axisSoftMax": 1
           }
         },
         "overrides": []
@@ -83,7 +87,7 @@
         "x": 12,
         "y": 0
       },
-      "description": "Measured duration sum divided by request count over 5 minutes. Excludes operational endpoints. No data when there is no traffic.",
+      "description": "Measured duration sum divided by request count over 5 minutes. Excludes operational endpoints. No data when there is no traffic. Y-axis starts at zero; maximum scales automatically to the displayed data.",
       "targets": [
         {
           "refId": "A",
@@ -108,7 +112,10 @@
             "drawStyle": "line",
             "lineWidth": 2,
             "fillOpacity": 12,
-            "showPoints": "never"
+            "showPoints": "never",
+            "scaleDistribution": {
+              "type": "linear"
+            }
           }
         },
         "overrides": []
@@ -191,7 +198,7 @@
         "x": 12,
         "y": 8
       },
-      "description": "Requests/second over 5 minutes. Excludes /metrics, /health, and /ready.",
+      "description": "Requests/second over 5 minutes. Excludes /metrics, /health, and /ready. Y-axis starts at zero with a soft maximum of 1 request/second; expands automatically for higher traffic.",
       "targets": [
         {
           "refId": "A",
@@ -216,7 +223,11 @@
             "drawStyle": "line",
             "lineWidth": 2,
             "fillOpacity": 12,
-            "showPoints": "never"
+            "showPoints": "never",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "axisSoftMax": 1
           }
         },
         "overrides": []
@@ -245,7 +256,7 @@
         "x": 0,
         "y": 16
       },
-      "description": "Measured duration sum divided by request count over 5 minutes. Includes ingestion and validation responses; excludes operational endpoints.",
+      "description": "Measured duration sum divided by request count over 5 minutes. Includes ingestion and validation responses; excludes operational endpoints. Y-axis starts at zero; maximum scales automatically to the displayed data.",
       "targets": [
         {
           "refId": "A",
@@ -270,7 +281,10 @@
             "drawStyle": "line",
             "lineWidth": 2,
             "fillOpacity": 12,
-            "showPoints": "never"
+            "showPoints": "never",
+            "scaleDistribution": {
+              "type": "linear"
+            }
           }
         },
         "overrides": []
